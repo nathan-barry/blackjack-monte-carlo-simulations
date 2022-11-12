@@ -8,6 +8,10 @@ class Player:
         self.deck = deck
         self.score = 0
 
+    def resetScore(self):
+        self.cards = []
+        self.score = 0
+
     def hit(self):
         self.cards.extend(self.deck.draw(1))
         self.checkScore()
@@ -37,11 +41,13 @@ class Player:
 
     def show(self):
         if self.isDealer:
-            print("Dealer's Cards")
+            current = "Dealer"
         else:
-            print("Player's Cards")
+            current = "Player"
+
+        print(f"{current}'s Cards")
 
         for i in self.cards:
             i.show()
 
-        print("Hand Score: " + str(self.score))
+        print(f"{current}'s Score: {str(self.score)}\n")
