@@ -44,4 +44,4 @@ class Player:
         for i in self.cards:
             i.show()
 
-        print("Score: " + str(self.score))
+        print("Hand Score: " + str(self.score))

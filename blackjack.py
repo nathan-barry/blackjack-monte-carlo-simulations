@@ -9,6 +9,10 @@ class Blackjack:
         self.player = Player(False, self.deck)
         self.dealer = Player(True, self.deck)
 
+    def printScores(self):
+        print(
+            f"Player's Score: {self.player.checkScore()}    Dealer's Score: {self.dealer.checkScore()}")
+
     def playRound(self):
         playerStatus = self.player.deal()
         dealerStatus = self.dealer.deal()
@@ -37,22 +41,24 @@ class Blackjack:
                 bust = self.player.hit()
                 self.player.show()
             if bust == 1:
-                print('Player busted')
+                print('Player busted, dealer wins')
                 return 1
 
         print("\n")
         self.dealer.show()
         if dealerStatus == 1:
+            self.printScores()
             print('Dealer got Blackjack')
             return 1
 
         while self.dealer.checkScore() < 17:
             if self.dealer.hit() == 1:
                 self.dealer.show()
-                print("Dealer busted")
+                print("Dealer busted, player wins")
                 return 1
             self.dealer.show()
 
+        self.printScores()
         if self.dealer.checkScore() == self.player.checkScore():
             print("Tie")
         elif self.dealer.checkScore() > self.player.checkScore():
