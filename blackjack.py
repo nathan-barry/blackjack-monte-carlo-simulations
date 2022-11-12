@@ -1,5 +1,7 @@
 from deck import Deck
 from player import Player
+import sys
+import subprocess
 
 
 class Blackjack:
@@ -25,17 +27,21 @@ class Blackjack:
 
         if playerStatus == 1:
             print('Player got Blackjack!')
+            self.playerScore += 1
             if dealerStatus == 1:
-                print("Player and Dealer got Blackjack (tie)")
+                print("Player and Dealer got Blackjack (TIE)")
+                self.playerScore -= 1
             return 1
 
+        print(
+            f"Dealer's Top Card is: {self.dealer.cards[0].value}{self.dealer.cards[0].suit}")
         cmd = ""
 
         while cmd != "Stand" and cmd != "s":
             bust = 0
             cmd = input("Hit or Stand? ")
 
-            print("\n")
+            subprocess.run('clear', shell=True)
 
             if cmd == 'pd':  # pd deck
                 if (self.player.deck != self.dealer.deck):
@@ -47,37 +53,38 @@ class Blackjack:
                 bust = self.player.hit()
                 self.player.show()
             if bust == 1:
-                print('Player busted, dealer wins\n')
+                print('Player busted, DEALER WINS\n')
                 self.playerScore -= 1
                 return 1
 
-        print("\n")
-        self.dealer.show()
+        subprocess.run('clear', shell=True)
         if dealerStatus == 1:
+            self.dealer.show()
             self.printScores()
-            print('Dealer got Blackjack')
+            print('Dealer got Blackjack, DEALER WINS\n')
             return 1
 
         while self.dealer.checkScore() < 17:
             if self.dealer.hit() == 1:
                 self.dealer.show()
-                print("Dealer busted, player wins\n")
+                print("Dealer busted, PLAYER WINS\n")
                 self.playerScore += 1
                 return 1
-            self.dealer.show()
+        self.dealer.show()
 
         self.printScores()
         if self.dealer.checkScore() == self.player.checkScore():
-            print("Tie\n")
+            print("TIE\n")
         elif self.dealer.checkScore() > self.player.checkScore():
-            print("Dealer wins\n")
+            print("DEALER WINS\n")
             self.playerScore -= 1
         elif self.dealer.checkScore() < self.player.checkScore():
-            print("Player wins\n")
+            print("PLAYER WINS\n")
             self.playerScore += 1
 
     def playGame(self):
         while self.deck:
+            subprocess.run('clear', shell=True)
             self.round += 1
             self.player.resetScore()
             self.dealer.resetScore()
