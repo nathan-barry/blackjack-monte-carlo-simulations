@@ -8,6 +8,8 @@ class Blackjack:
         self.deck.generate()
         self.player = Player(False, self.deck)
         self.dealer = Player(True, self.deck)
+        self.playerScore = 0
+        self.round = 0
         self.shuffelPercent = shufflePercent
         self.numOfDecks = numOfDecks
 
@@ -46,6 +48,7 @@ class Blackjack:
                 self.player.show()
             if bust == 1:
                 print('Player busted, dealer wins\n')
+                self.playerScore -= 1
                 return 1
 
         print("\n")
@@ -59,6 +62,7 @@ class Blackjack:
             if self.dealer.hit() == 1:
                 self.dealer.show()
                 print("Dealer busted, player wins\n")
+                self.playerScore += 1
                 return 1
             self.dealer.show()
 
@@ -67,15 +71,23 @@ class Blackjack:
             print("Tie\n")
         elif self.dealer.checkScore() > self.player.checkScore():
             print("Dealer wins\n")
+            self.playerScore -= 1
         elif self.dealer.checkScore() < self.player.checkScore():
             print("Player wins\n")
+            self.playerScore += 1
 
     def playGame(self):
         while self.deck:
+            self.round += 1
             self.player.resetScore()
             self.dealer.resetScore()
+            if self.deck.count() <= (52 * self.numOfDecks) * self.shuffelPercent:
+                print("---SHUFFLING---")
+                self.deck.generate(self.numOfDecks)
             self.playRound()
-            print(f"Deck count: {self.deck.count()}\n")
+            print(f"Deck count: {self.deck.count()}")
+            print(f"Round: {self.round}")
+            print(f"Player Score: {self.playerScore}\n")
 
             if input("Play again?: [y]/n ") == 'n':
                 break
