@@ -1,6 +1,5 @@
 from deck import Deck
 from player import Player
-import sys
 import subprocess
 
 

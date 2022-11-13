@@ -27,15 +27,15 @@ class Player:
         return 0
 
     def checkScore(self):
-        counter = 0
+        aces = 0
         self.score = 0
         for card in self.cards:
             if card.price() == 11:
-                counter += 1
+                aces += 1
             self.score += card.price()
 
-        while counter != 0 and self.score > 21:
-            counter -= 1
+        while aces != 0 and self.score > 21:
+            aces -= 1
             self.score -= 10
         return self.score
 
