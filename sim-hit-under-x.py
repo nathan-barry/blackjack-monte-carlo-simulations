@@ -12,6 +12,7 @@ class HitUnderXStrategy:
         self.dealer = Player(True, self.deck)
         self.playerWins = 0
         self.dealerWins = 0
+        self.tie = 0
         self.round = 0
         self.numIterations = numIterations
         self.shuffelPercent = shufflePercent
@@ -36,6 +37,8 @@ class HitUnderXStrategy:
             self.playerWins += 1
         elif self.player.checkScore() < self.dealer.checkScore():
             self.dealerWins += 1
+        else:
+            self.tie += 1
 
     def runSimulation(self):
         print("Running simulation...")
@@ -50,6 +53,7 @@ class HitUnderXStrategy:
         print("\n---FINAL OUTPUT---")
         print(f"Player Score: {self.playerWins}")
         print(f"Dealer Score: {self.dealerWins}")
+        print(f"Ties: {self.Ties}")
 
 
 hitUnderValues = [12, 13, 14, 15, 16, 17]
