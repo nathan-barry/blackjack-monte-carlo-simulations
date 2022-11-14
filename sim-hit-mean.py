@@ -5,7 +5,7 @@ from player import Player
 
 
 class HitExpectedStrategy:
-    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=100000):
+    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_00_000):
         self.deck = Deck()
         self.deck.generate()
         self.player = Player(False, self.deck)
@@ -21,17 +21,25 @@ class HitExpectedStrategy:
         playerStatus = self.player.deal()
         dealerStatus = self.dealer.deal()
 
+        total = 0
+        for card in self.deck.cards:
+            total += card.price()
+        mean = total / len(self.deck.cards)
+
+        while self.player.checkScore() < 21 - mean:
+            self.player.hit()
+
         while self.dealer.checkScore() < 17:
             self.dealer.hit()
 
-        if self.dealer.checkScore() > 21:
-            self.playerWins += 1
-            # print(
-            #     f"Player Score: {self.player.score}    Dealer Score: {self.dealer.score}    PLAYER WINS")
-        else:
+        if self.player.checkScore() > 21:
             self.dealerWins += 1
-            # print(
-            #     f"Player Score: {self.player.score}    Dealer Score: {self.dealer.score}    DEALER WINS")
+        elif self.dealer.checkScore() > 21:
+            self.playerWins += 1
+        elif self.player.checkScore() > self.dealer.checkScore():
+            self.playerWins += 1
+        elif self.player.checkScore() < self.dealer.checkScore():
+            self.dealerWins += 1
 
     def runSimulation(self):
         print("Running simulation...")
@@ -48,5 +56,9 @@ class HitExpectedStrategy:
         print(f"Dealer Score: {self.dealerWins}")
 
 
-b = FoldStrategy()
+b = HitExpectedStrategy()
 b.runSimulation()
+
+# ---FINAL OUTPUT---
+# Player Score: 383661
+# Dealer Score: 565375
