@@ -57,7 +57,7 @@ class HitExpectedStrategy:
         print("\n---FINAL OUTPUT---")
         print(f"Player Score: {self.playerWins}")
         print(f"Dealer Score: {self.dealerWins}")
-        print(f"Ties: {self.Ties}")
+        print(f"Ties: {self.tie}")
 
 
 b = HitExpectedStrategy()
