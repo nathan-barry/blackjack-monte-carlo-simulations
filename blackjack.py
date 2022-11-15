@@ -68,7 +68,7 @@ class Blackjack:
         while cmd != "2":
             bust = 0
             print(
-                f"Dealer's Top Card is: {self.dealer.cards[0].value}{self.dealer.cards[0].suit}\n")
+                f"Dealer's Top Card is: {self.dealer.cards[0].value}{self.dealer.cards[0].suit}")
             print(f"Cash: {self.cash}    Bet Amount: {betAmount}\n")
             if canSplit and canDouble and not hasSplit and not hasDoubled:
                 cmd = input("Hit: 1\nStand: 2\nDouble: 3\nSplit: 4\n")
@@ -90,14 +90,16 @@ class Blackjack:
             if cmd == "1":
                 bust = self.player.hit()
                 self.player.show()
-            if cmd == "3" and canDouble:
+            elif cmd == "3" and canDouble:
                 self.cash -= betAmount
                 betAmount += betAmount
                 hasDoubled = True
                 self.player.show()
-            if cmd == "4" and canSplit:
+            elif cmd == "4" and canSplit:
                 self.cas
                 hasDoubled = True
+                self.player.show()
+            else:
                 self.player.show()
             if bust == 1:
                 print('Player busted, DEALER WINS\n')
@@ -115,6 +117,7 @@ class Blackjack:
             if self.dealer.hit() == 1:
                 self.dealer.show()
                 print("Dealer busted, PLAYER WINS\n")
+                self.cash += betAmount * 2
                 self.playerScore += 1
                 return 1
         self.dealer.show()
