@@ -66,7 +66,6 @@ class Player:
     def checkScoreSplit(self):
         aces = 0
         self.splitScore = 0
-        print(f"split deck length: {len(self.splitCards)}")
         for card in self.splitCards:
             if card.price() == 11:
                 aces += 1

@@ -20,8 +20,11 @@ class Blackjack:
         print(
             f"Player's Score: {self.player.checkScore()}    Dealer's Score: {self.dealer.checkScore()}")
 
+    def printSplitScores(self):
+        print(
+            f"First Hand: {self.player.checkScore()}    Second Hand: {self.player.checkScoreSplit()}    Dealer's Score: {self.dealer.checkScore()}")
+
     def playRound(self):
-        self.deck.splitsOnly()
         playerStatus = self.player.deal()
         dealerStatus = self.dealer.deal()
 
@@ -37,6 +40,7 @@ class Blackjack:
                 betAmount = int(betAmount)
 
         self.cash -= betAmount
+        betAmount2 = betAmount
 
         subprocess.run('clear', shell=True)
 
@@ -60,6 +64,8 @@ class Blackjack:
         hasDoubled = False
         hasSplit = False
         handOneDone = False
+        hand1bj = False
+        hand2bj = False
 
         if (len(self.player.cards) == 2) and self.player.cards[0].value == self.player.cards[1].value:
             canSplit = True
@@ -72,7 +78,11 @@ class Blackjack:
             bust = 0
             print(
                 f"Dealer's Top Card is: {self.dealer.cards[0].value}{self.dealer.cards[0].suit}")
-            print(f"Cash: {self.cash}    Bet Amount: {betAmount}\n")
+            if hasSplit:
+                print(
+                    f"Cash: {self.cash}    Bet Amount 1: {betAmount}    Bet Amount 2: {betAmount2}\n")
+            else:
+                print(f"Cash: {self.cash}    Bet Amount: {betAmount}\n")
 
             if hasSplit:
                 if handOneDone:
@@ -97,9 +107,7 @@ class Blackjack:
                 print(f"Deck: {self.player.deck}")
                 input("seen")
 
-            print(f"handOneDone: {handOneDone}")
             if not handOneDone:
-                print("hand one NOT done")
                 if cmd == "1":
                     bust = self.player.hit()
                     if hasSplit:
@@ -118,15 +126,30 @@ class Blackjack:
                     print(
                         f"You drew a {self.player.cards[-1].value}{self.player.cards[-1].suit}")
                     cmd = "2"
+                    if hasSplit:
+                        cmd = ""
+                        self.player.showSplit()
                     handOneDone = True
                 elif cmd == "2":
                     handOneDone = True
+                    if hasSplit:
+                        cmd = ""
+                        self.player.showSplit()
                 elif cmd == "4" and canSplit:
                     self.player.splitCards.append(self.player.cards.pop())
+                    self.cash -= betAmount
                     self.player.hit()
                     self.player.hitSplit()
                     hasSplit = True
                     self.player.showSplit()
+                    if self.player.checkScore() == 21:
+                        print('First Hand got Blackjack!')
+                        handOneDone = True
+                        hand1bj = True
+                        handOneDone = True
+                    if self.player.checkScoreSplit() == 21:
+                        print('Second Hand got Blackjack!')
+                        hand2bj = True
                 else:
                     if hasSplit:
                         self.player.showSplit()
@@ -140,15 +163,17 @@ class Blackjack:
                 if bust == 1 and hasSplit:
                     print('Hand 1 busted\n')
                     handOneDone = True
+                    hasDoubled = False
                     self.playerScore -= 1
+            elif hand2bj:
+                cmd = "2"
             else:
-                print("hand one done")
                 if cmd == "1":
                     bust = self.player.hitSplit()
                     self.player.showSplit()
                 elif cmd == "3" and canDouble:
-                    self.cash -= betAmount
-                    betAmount += betAmount
+                    self.cash -= betAmount2
+                    betAmount2 += betAmount2
                     hasDoubled = True
                     bust = self.player.hitSplit()
                     self.player.showSplit()
@@ -157,10 +182,9 @@ class Blackjack:
                     cmd = "2"
                 else:
                     self.player.showSplit()
-                if bust == 1 and hasSplit:
+                if bust == 1:
                     print('Hand 2 busted\n')
                     self.playerScore -= 1
-                    return 1
 
         subprocess.run('clear', shell=True)
         if dealerStatus == 1:
@@ -174,12 +198,23 @@ class Blackjack:
                 self.dealer.show()
                 print("Dealer busted, PLAYER WINS\n")
                 self.cash += betAmount * 2
+                if hasSplit:
+                    self.cash += betAmount2 * 2
                 self.playerScore += 1
                 return 1
         self.dealer.show()
 
-        self.printScores()
-        if self.dealer.checkScore() == self.player.checkScore():
+        if hasSplit:
+            self.printSplitScores()
+            print("\nFirst Hand")
+        else:
+            self.printScores()
+        if hand1bj:
+            print("Hand 1 blackjack")
+            self.cash += betAmount * 1.5
+        elif self.player.checkScore() > 21:
+            print("BUSTED HAND\n")
+        elif self.dealer.checkScore() == self.player.checkScore():
             print("TIE\n")
             self.cash += betAmount
         elif self.dealer.checkScore() > self.player.checkScore():
@@ -189,8 +224,26 @@ class Blackjack:
             print("PLAYER WINS\n")
             self.cash += betAmount * 2
             self.playerScore += 1
+        if hasSplit:
+            print("Second Hand")
+            if hand1bj:
+                print("Hand 2 blackjack")
+                self.cash += betAmount2 * 1.5
+            elif self.player.checkScoreSplit() > 21:
+                print("BUSTED HAND\n")
+            elif self.dealer.checkScore() == self.player.checkScoreSplit():
+                print("TIE\n")
+                self.cash += betAmount2
+            elif self.dealer.checkScore() > self.player.checkScoreSplit():
+                print("DEALER WINS\n")
+                self.playerScore -= 1
+            elif self.dealer.checkScore() < self.player.checkScoreSplit():
+                print("PLAYER WINS\n")
+                self.cash += betAmount * 2
+                self.playerScore += 1
 
     def playGame(self):
+        self.deck.splitsOnly()
         while self.cash > self.tableMinimum:
             subprocess.run('clear', shell=True)
             self.round += 1
