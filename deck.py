@@ -20,6 +20,12 @@ class Deck:
                     self.cards.append(Card(i, j))
         random.shuffle(self.cards)
 
+    def splitsOnly(self):
+        self.cards = []
+        for i in range(1, 14):
+            for j in range(4):
+                self.cards.append(Card(i, j))
+
     def draw(self, iteration):
         drawnCards = []
         for i in range(iteration):

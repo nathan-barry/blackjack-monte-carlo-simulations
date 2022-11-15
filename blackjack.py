@@ -21,6 +21,7 @@ class Blackjack:
             f"Player's Score: {self.player.checkScore()}    Dealer's Score: {self.dealer.checkScore()}")
 
     def playRound(self):
+        self.deck.splitsOnly()
         playerStatus = self.player.deal()
         dealerStatus = self.dealer.deal()
 
@@ -28,12 +29,12 @@ class Blackjack:
         print(f"Cash: {self.cash}\n")
         while betNotValid:
             betAmount = input(f"Bet Amount (default {self.tableMinimum}): ")
-            if self.cash - int(betAmount) >= 0:
-                betNotValid = False
-                betAmount = int(betAmount)
             if betAmount == "":
                 betAmount = 10
                 betNotValid = False
+            if self.cash - int(betAmount) >= 0:
+                betNotValid = False
+                betAmount = int(betAmount)
 
         self.cash -= betAmount
 
@@ -58,9 +59,11 @@ class Blackjack:
         canDouble = False
         hasDoubled = False
         hasSplit = False
+        handOneDone = False
 
-        if (self.player.cards == 2) and self.player.cards[0].value == self.player.cards[1].value:
+        if (len(self.player.cards) == 2) and self.player.cards[0].value == self.player.cards[1].value:
             canSplit = True
+            print("CAN SPLIT")
 
         if (self.cash >= betAmount):
             canDouble = True
@@ -70,6 +73,12 @@ class Blackjack:
             print(
                 f"Dealer's Top Card is: {self.dealer.cards[0].value}{self.dealer.cards[0].suit}")
             print(f"Cash: {self.cash}    Bet Amount: {betAmount}\n")
+
+            if hasSplit:
+                if handOneDone:
+                    print("Second Hand")
+                else:
+                    print("First Hand")
             if canSplit and canDouble and not hasSplit and not hasDoubled:
                 cmd = input("Hit: 1\nStand: 2\nDouble: 3\nSplit: 4\n")
             elif canSplit and not hasSplit:
@@ -86,25 +95,72 @@ class Blackjack:
                     raise Exception(
                         "Error: Decks not same between Player and Dealer")
                 print(f"Deck: {self.player.deck}")
+                input("seen")
 
-            if cmd == "1":
-                bust = self.player.hit()
-                self.player.show()
-            elif cmd == "3" and canDouble:
-                self.cash -= betAmount
-                betAmount += betAmount
-                hasDoubled = True
-                self.player.show()
-            elif cmd == "4" and canSplit:
-                self.cas
-                hasDoubled = True
-                self.player.show()
+            print(f"handOneDone: {handOneDone}")
+            if not handOneDone:
+                print("hand one NOT done")
+                if cmd == "1":
+                    bust = self.player.hit()
+                    if hasSplit:
+                        self.player.showSplit()
+                    else:
+                        self.player.show()
+                elif cmd == "3" and canDouble:
+                    self.cash -= betAmount
+                    betAmount += betAmount
+                    hasDoubled = True
+                    bust = self.player.hit()
+                    if hasSplit:
+                        self.player.showSplit()
+                    else:
+                        self.player.show()
+                    print(
+                        f"You drew a {self.player.cards[-1].value}{self.player.cards[-1].suit}")
+                    cmd = "2"
+                    handOneDone = True
+                elif cmd == "2":
+                    handOneDone = True
+                elif cmd == "4" and canSplit:
+                    self.player.splitCards.append(self.player.cards.pop())
+                    self.player.hit()
+                    self.player.hitSplit()
+                    hasSplit = True
+                    self.player.showSplit()
+                else:
+                    if hasSplit:
+                        self.player.showSplit()
+                    else:
+                        self.player.show()
+                if bust == 1 and not hasSplit:
+                    print('Player busted, DEALER WINS\n')
+                    handOneDone = True
+                    self.playerScore -= 1
+                    return 1
+                if bust == 1 and hasSplit:
+                    print('Hand 1 busted\n')
+                    handOneDone = True
+                    self.playerScore -= 1
             else:
-                self.player.show()
-            if bust == 1:
-                print('Player busted, DEALER WINS\n')
-                self.playerScore -= 1
-                return 1
+                print("hand one done")
+                if cmd == "1":
+                    bust = self.player.hitSplit()
+                    self.player.showSplit()
+                elif cmd == "3" and canDouble:
+                    self.cash -= betAmount
+                    betAmount += betAmount
+                    hasDoubled = True
+                    bust = self.player.hitSplit()
+                    self.player.showSplit()
+                    print(
+                        f"You drew a {self.player.cards[-1].value}{self.player.cards[-1].suit}")
+                    cmd = "2"
+                else:
+                    self.player.showSplit()
+                if bust == 1 and hasSplit:
+                    print('Hand 2 busted\n')
+                    self.playerScore -= 1
+                    return 1
 
         subprocess.run('clear', shell=True)
         if dealerStatus == 1:
