@@ -47,6 +47,8 @@ class Blackjack:
             if dealerStatus == 1:
                 print("Player and Dealer got Blackjack (TIE)")
                 self.playerScore -= 1
+                return 1
+            self.cash += betAmount + (betAmount) * 1.5  # 3/2 payout
             return 1
 
         cmd = ""
@@ -120,11 +122,13 @@ class Blackjack:
         self.printScores()
         if self.dealer.checkScore() == self.player.checkScore():
             print("TIE\n")
+            self.cash += betAmount
         elif self.dealer.checkScore() > self.player.checkScore():
             print("DEALER WINS\n")
             self.playerScore -= 1
         elif self.dealer.checkScore() < self.player.checkScore():
             print("PLAYER WINS\n")
+            self.cash += betAmount * 2
             self.playerScore += 1
 
     def playGame(self):
