@@ -167,6 +167,7 @@ class Blackjack:
                     self.playerScore -= 1
             elif hand2bj:
                 cmd = "2"
+                break
             else:
                 if cmd == "1":
                     bust = self.player.hitSplit()
@@ -226,7 +227,7 @@ class Blackjack:
             self.playerScore += 1
         if hasSplit:
             print("Second Hand")
-            if hand1bj:
+            if hand2bj:
                 print("Hand 2 blackjack")
                 self.cash += betAmount2 * 1.5
             elif self.player.checkScoreSplit() > 21:
@@ -243,7 +244,6 @@ class Blackjack:
                 self.playerScore += 1
 
     def playGame(self):
-        self.deck.splitsOnly()
         while self.cash > self.tableMinimum:
             subprocess.run('clear', shell=True)
             self.round += 1
