@@ -76,12 +76,11 @@ class HitExpectedStrategy:
         print("\n---FINAL OUTPUT---")
         print(f"Player Score: {self.playerWins}")
         print(f"Dealer Score: {self.dealerWins}")
-        print(f"Ties: {self.tie}")
+        print(f"Ties: {self.tie}\n")
+
+        print(f"Player Busts: {self.playerBusts}")
+        print(f"Dealer Busts: {self.dealerBusts}")
 
 
 b = HitExpectedStrategy()
 b.runSimulation()
-
-# ---FINAL OUTPUT---
-# Player Score: 383661
-# Dealer Score: 565375

@@ -34,22 +34,18 @@ class FoldStrategy:
         if self.dealer.checkScore() > 21:
             self.playerWins += 1
             self.dealerBusts += 1
-            return
 
         # Player has higher score, PLAYER WINS
         elif self.player.checkScore() > self.dealer.checkScore():
             self.playerWins += 1
-            return
 
         # Dealer has higher score, DEALER WINS
         elif self.player.checkScore() < self.dealer.checkScore():
             self.dealerWins += 1
-            return
 
         # Player and dealer has same score, TIE
         else:
             self.ties += 1
-            return
 
     def runSimulation(self):
         print("Running simulation...")
