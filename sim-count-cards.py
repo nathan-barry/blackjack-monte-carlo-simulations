@@ -44,15 +44,19 @@ class CountCards:
 
         # Player Blackjack
         if playerStatus == 1:
+            self.totalBlackjacks += 1
             self.playerBlackjacks += 1
             self.countWhenBlackjack.append(self.count)
             # Dealer Blackjack (if player blackjack)
             if dealerStatus == 1:
-                self.playerWins -= 1
                 self.totalBlackjacks += 1
                 self.dealerBlackjacks += 1
                 self.countWhenBlackjack.append(self.count)
+                # Tie
+                self.tie += 1
+                self.countWhenTie.append(self.count)
                 return 1
+            # Player wins
             self.playerWins += 1
             self.countWhenPlayerWin.append(self.count)
             return 1
@@ -87,13 +91,11 @@ class CountCards:
             # Counts drawn dealer card
             self.countCard(self.dealer.cards[len(self.dealer.cards) - 1])
 
-        # Dealer Blackjack, DEALER WIN
+        # Dealer Blackjack
         if dealerStatus == 1:
             self.totalBlackjacks += 1
             self.countWhenBlackjack.append(self.count)
             self.dealerBlackjacks += 1
-            self.countWhenDealerWin.append(self.count)
-            return 1
 
         # Dealer busts, PLAYER WINS
         if self.dealer.checkScore() > 21:

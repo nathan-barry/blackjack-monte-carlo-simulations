@@ -48,11 +48,10 @@ class Blackjack:
 
         if playerStatus == 1:
             print('Player got Blackjack!')
-            self.playerScore += 1
             if dealerStatus == 1:
                 print("Player and Dealer got Blackjack (TIE)")
-                self.playerScore -= 1
                 return 1
+            self.playerScore += 1
             self.cash += betAmount + (betAmount) * 1.5  # 3/2 payout
             return 1
 
@@ -189,10 +188,7 @@ class Blackjack:
 
         subprocess.run('clear', shell=True)
         if dealerStatus == 1:
-            self.dealer.show()
-            self.printScores()
-            print('Dealer got Blackjack, DEALER WINS\n')
-            return 1
+            print('Dealer got Blackjack\n')
 
         while self.dealer.checkScore() < 17:
             if self.dealer.hit() == 1:
