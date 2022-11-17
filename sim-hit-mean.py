@@ -5,7 +5,7 @@ from player import Player
 
 
 class HitExpectedStrategy:
-    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_00_000):
+    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_000_000):
         self.deck = Deck()
         self.deck.generate()
         self.player = Player(False, self.deck)

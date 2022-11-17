@@ -5,7 +5,7 @@ from player import Player
 
 
 class CountCards:
-    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_00_000):
+    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_000_000):
         self.deck = Deck()
         self.deck.generate()
         self.player = Player(False, self.deck)
@@ -89,6 +89,7 @@ class CountCards:
             self.dealer.resetScore()
             if self.deck.count() <= (52 * self.numOfDecks) * self.shuffelPercent:
                 # print("---SHUFFLING---")
+                self.count = 0
                 self.deck.generate(self.numOfDecks)
             self.playRound()
         print("\n---FINAL OUTPUT---")

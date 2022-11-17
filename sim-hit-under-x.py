@@ -5,7 +5,7 @@ from player import Player
 
 
 class HitUnderXStrategy:
-    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_000_000, hitUnder=14):
+    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_00_000, hitUnder=14):
         self.deck = Deck()
         self.deck.generate()
         self.player = Player(False, self.deck)

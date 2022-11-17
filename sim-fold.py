@@ -12,24 +12,38 @@ class FoldStrategy:
         self.dealer = Player(True, self.deck)
         self.playerWins = 0
         self.dealerWins = 0
+        self.ties = 0
         self.round = 0
         self.numIterations = numIterations
         self.shuffelPercent = shufflePercent
         self.numOfDecks = numOfDecks
 
     def playRound(self):
+        # Player and dealer draw two cards
         playerStatus = self.player.deal()
         dealerStatus = self.dealer.deal()
 
+        # 0 chance of player busting
+
+        # Dealer draws until above 17
         while self.dealer.checkScore() < 17:
             self.dealer.hit()
 
+        # Dealer busts, PLAYER WINS
         if self.dealer.checkScore() > 21:
             self.playerWins += 1
-            # print(
-            #     f"Player Score: {self.player.score}    Dealer Score: {self.dealer.score}    PLAYER WINS")
-        else:
+
+        # Player has higher score, PLAYER WINS
+        elif self.player.checkScore() > self.dealer.checkScore():
+            self.playerWins += 1
+
+        # Dealer has higher score, DEALER WINS
+        elif self.player.checkScore() < self.dealer.checkScore():
             self.dealerWins += 1
+
+        # Player and dealer has same score, TIE
+        else:
+            self.ties += 1
             # print(
             #     f"Player Score: {self.player.score}    Dealer Score: {self.dealer.score}    DEALER WINS")
 
@@ -46,6 +60,7 @@ class FoldStrategy:
         print("\n---FINAL OUTPUT---")
         print(f"Player Score: {self.playerWins}")
         print(f"Dealer Score: {self.dealerWins}")
+        print(f"Ties: {self.ties}")
 
 
 b = FoldStrategy()
