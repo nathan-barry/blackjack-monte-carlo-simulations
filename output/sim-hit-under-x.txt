@@ -1,0 +1,66 @@
+Always hit under 12
+Running simulation...
+
+---FINAL OUTPUT---
+Player Score: 416059
+Dealer Score: 518298
+Ties: 65643
+
+Player Busts: 0
+Dealer Busts: 283808
+
+Always hit under 13
+Running simulation...
+
+---FINAL OUTPUT---
+Player Score: 419490
+Dealer Score: 508501
+Ties: 72009
+
+Player Busts: 33856
+Dealer Busts: 274206
+
+Always hit under 14
+Running simulation...
+
+---FINAL OUTPUT---
+Player Score: 420055
+Dealer Score: 500306
+Ties: 79639
+
+Player Busts: 78644
+Dealer Busts: 261062
+
+Always hit under 15
+Running simulation...
+
+---FINAL OUTPUT---
+Player Score: 419601
+Dealer Score: 494256
+Ties: 86143
+
+Player Busts: 133965
+Dealer Busts: 245844
+
+Always hit under 16
+Running simulation...
+
+---FINAL OUTPUT---
+Player Score: 415143
+Dealer Score: 490766
+Ties: 94091
+
+Player Busts: 202455
+Dealer Busts: 226204
+
+Always hit under 17
+Running simulation...
+
+---FINAL OUTPUT---
+Player Score: 408976
+Dealer Score: 488817
+Ties: 102207
+
+Player Busts: 283314
+Dealer Busts: 204083
+

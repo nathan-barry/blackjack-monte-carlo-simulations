@@ -2,10 +2,11 @@ from deck import Deck
 from player import Player
 
 # This strategy is hits if the player score is under X
+# python3 sim-hit-under-x.py > ./output/sim-hit-under-x.txt
 
 
 class HitUnderXStrategy:
-    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_00_000, hitUnder=14):
+    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_000_000, hitUnder=14):
         self.deck = Deck()
         self.deck.generate()
         self.player = Player(False, self.deck)

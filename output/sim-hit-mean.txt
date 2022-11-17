@@ -1,0 +1,12 @@
+Running simulation...
+
+---FINAL OUTPUT---
+Player Score: 421367
+Dealer Score: 499288
+Ties: 79345
+
+Player Busts: 79849
+Dealer Busts: 261824
+
+Expected value of card in fresh deck: 7.3076923076923075
+Expected value of card in about-to-shuffle deck: 7.307538757019224

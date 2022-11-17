@@ -2,10 +2,11 @@ from deck import Deck
 from player import Player
 
 # This strategy is fold every single round
+# python3 sim-fold.py > ./output/sim-fold.txt
 
 
 class FoldStrategy:
-    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=100000):
+    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_000_000):
         self.deck = Deck()
         self.deck.generate()
         self.player = Player(False, self.deck)

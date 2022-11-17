@@ -2,6 +2,7 @@ from deck import Deck
 from player import Player
 
 # This hits if the expected value of the deck is less than 21 - current score
+# python3 sim-hit-mean.py > ./output/sim-hit-mean.txt
 
 
 class HitExpectedStrategy:
@@ -14,6 +15,7 @@ class HitExpectedStrategy:
         self.dealerWins = 0
         self.playerBusts = 0
         self.dealerBusts = 0
+        self.shuffleMean = []
         self.tie = 0
         self.round = 0
         self.numIterations = numIterations
@@ -70,7 +72,11 @@ class HitExpectedStrategy:
             self.player.resetScore()
             self.dealer.resetScore()
             if self.deck.count() <= (52 * self.numOfDecks) * self.shuffelPercent:
-                # print("---SHUFFLING---")
+                shuffle_total = 0
+                for card in self.deck.cards:
+                    shuffle_total += card.price()
+                mean = shuffle_total / len(self.deck.cards)
+                self.shuffleMean.append(mean)
                 self.deck.generate(self.numOfDecks)
             self.playRound()
         print("\n---FINAL OUTPUT---")
@@ -79,7 +85,25 @@ class HitExpectedStrategy:
         print(f"Ties: {self.tie}\n")
 
         print(f"Player Busts: {self.playerBusts}")
-        print(f"Dealer Busts: {self.dealerBusts}")
+        print(f"Dealer Busts: {self.dealerBusts}\n")
+
+        # Calculates expected value of card in remaining deck
+        fresh_deck = Deck()
+        fresh_deck.generate()
+        total = 0
+        # Sums value of all cards and divides it by number of cards in deck
+        for card in fresh_deck.cards:
+            total += card.price()
+        mean = total / len(fresh_deck.cards)
+
+        print(f"Expected value of card in fresh deck: {mean}")
+
+        total = 0
+        # Sums value of all cards and divides it by number of cards in deck
+        for value in self.shuffleMean:
+            total += value
+        mean = total / len(self.shuffleMean)
+        print(f"Expected value of card in about-to-shuffle deck: {mean}")
 
 
 b = HitExpectedStrategy()

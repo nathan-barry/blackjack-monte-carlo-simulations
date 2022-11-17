@@ -1,0 +1,8 @@
+Running simulation...
+
+---FINAL OUTPUT---
+Player Score: 383309
+Dealer Score: 567266
+Ties: 49425
+
+Dealer Busts: 283341
