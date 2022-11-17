@@ -10,6 +10,12 @@ class Player:
         self.score = 0
         self.splitScore = 0
 
+    def printHand(self):
+        hand = []
+        for card in self.cards:
+            hand.append(f"{card.value}{card.suit}")
+        print(hand)
+
     def resetScore(self):
         self.cards = []
         self.score = 0

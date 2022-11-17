@@ -2,10 +2,11 @@ from deck import Deck
 from player import Player
 
 # This hits if the expected value of the deck is less than 21 - current score
+# python3 sim-count-cards.py > ./output/sim-count-cards.txt
 
 
 class CountCards:
-    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_00_000):
+    def __init__(self, shufflePercent=.75, numOfDecks=1, numIterations=1_000_000):
         self.deck = Deck()
         self.deck.generate()
         self.player = Player(False, self.deck)
@@ -35,12 +36,11 @@ class CountCards:
         playerStatus = self.player.deal()
         dealerStatus = self.dealer.deal()
 
-        # Counts cards in players hands
-        for card in self.player.cards:
-            self.countCard(card)
-
-        # Counts revealed Dealer card
-        self.countCard(self.dealer.cards[0])
+        # Dealer Blackjack
+        if dealerStatus == 1:
+            self.totalBlackjacks += 1
+            self.dealerBlackjacks += 1
+            self.countWhenBlackjack.append(self.count)
 
         # Player Blackjack
         if playerStatus == 1:
@@ -49,33 +49,32 @@ class CountCards:
             self.countWhenBlackjack.append(self.count)
             # Dealer Blackjack (if player blackjack)
             if dealerStatus == 1:
-                self.totalBlackjacks += 1
-                self.dealerBlackjacks += 1
-                self.countWhenBlackjack.append(self.count)
                 # Tie
                 self.tie += 1
                 self.countWhenTie.append(self.count)
-                return 1
-            # Player wins
-            self.playerWins += 1
-            self.countWhenPlayerWin.append(self.count)
+            else:
+                # Player wins
+                self.playerWins += 1
+                self.countWhenPlayerWin.append(self.count)
+            # Count the cards in the hand
+            for card in self.player.cards:
+                self.countCard(card)
+            for card in self.dealer.cards:
+                self.countCard(card)
             return 1
 
-        # Calculates expected value of card in remaining deck
-        total = 0
-        # Sums value of all cards and divides it by number of cards in deck
-        for card in self.deck.cards:
-            total += card.price()
-        mean = total / len(self.deck.cards)
+        # Counts cards in players hands
+        for card in self.player.cards:
+            self.countCard(card)
+
+        # Counts revealed Dealer card
+        self.countCard(self.dealer.cards[0])
 
         # Player draws until drawing is expected to bust
-        while self.player.checkScore() < 21 - mean:
+        while self.player.checkScore() < 14:
             self.player.hit()
             # Counts drawn player card
             self.countCard(self.player.cards[len(self.player.cards) - 1])
-
-        # Counts Dealer's second card
-        self.countCard(self.dealer.cards[1])
 
         # Player busts, DEALER WINS
         if self.player.checkScore() > 21:
@@ -83,19 +82,18 @@ class CountCards:
             self.playerBusts += 1
             self.countWhenPlayerBust.append(self.count)
             self.countWhenDealerWin.append(self.count)
+            # Counts Dealer's second hand
+            self.countCard(self.dealer.cards[1])
             return  # return early
+
+        # Counts Dealer's second card
+        self.countCard(self.dealer.cards[1])
 
         # Dealer draws until above 17
         while self.dealer.checkScore() < 17:
             self.dealer.hit()
             # Counts drawn dealer card
             self.countCard(self.dealer.cards[len(self.dealer.cards) - 1])
-
-        # Dealer Blackjack
-        if dealerStatus == 1:
-            self.totalBlackjacks += 1
-            self.countWhenBlackjack.append(self.count)
-            self.dealerBlackjacks += 1
 
         # Dealer busts, PLAYER WINS
         if self.dealer.checkScore() > 21:
@@ -119,13 +117,25 @@ class CountCards:
             self.tie += 1
             self.countWhenTie.append(self.count)
 
+        # self.printStats()
+        # print(self.count)
+
     def countCard(self, card):
         # 10, J, Q, K, A
         if card.cost >= 10 or card.cost == 1:
+            # print("HIGH")
             self.count -= 1
         # 2, 3, 4, 5, 6
         elif card.cost <= 6 and card.cost != 1:
+            # print("LOW")
             self.count += 1
+
+    def printStats(self):
+        print("Player hand:")
+        self.player.printHand()
+        print("Dealer hand:")
+        self.dealer.printHand()
+        print(f"count: {self.count}")
 
     def runSimulation(self):
         print("Running simulation...")
