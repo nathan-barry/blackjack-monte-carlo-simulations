@@ -1,21 +1,14 @@
 Running simulation...
 
 ---FINAL OUTPUT---
-Player Score: 423039
-Player Win Avg. Count: -0.09202224853973275
+Player Score: 424171
+Dealer Score: 500498
+Ties: 75331
 
-Dealer Score: 500989
-Dealer Win Avg. Count: 0.02651355618586436
+Player Busts: 80042
+Dealer Busts: 247341
 
-Ties: 75972
-Tie Avg. Count: -0.3828120886642447
-
-Player Busts: 78504
-Player Bust Avg. Count: -0.2670946703352695
-Dealer Busts: 246874
-Dealer Bust Avg. Count: -0.010600549268047668
-
-Total Blackjacks: 96085
-Player Blackjacks: 47638
-Dealer Blackjacks: 48447
-Blackjack Avg. Count: 0.07175937971587656
+Total Blackjacks: 96337
+Player Blackjacks: 48227
+Dealer Blackjacks: 48110
+Blackjack Avg. Count: 0.08512824771375484

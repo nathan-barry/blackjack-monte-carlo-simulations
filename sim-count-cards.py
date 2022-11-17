@@ -70,8 +70,15 @@ class CountCards:
         # Counts revealed Dealer card
         self.countCard(self.dealer.cards[0])
 
+        # Calculates expected value of card in remaining deck
+        total = 0
+        # Sums value of all cards and divides it by number of cards in deck
+        for card in self.deck.cards:
+            total += card.price()
+        mean = total / len(self.deck.cards)
+
         # Player draws until drawing is expected to bust
-        while self.player.checkScore() < 14:
+        while self.player.checkScore() < 21 - mean:
             self.player.hit()
             # Counts drawn player card
             self.countCard(self.player.cards[len(self.player.cards) - 1])
@@ -152,43 +159,43 @@ class CountCards:
 
         # Calculate average count when player wins
         print(f"Player Score: {self.playerWins}")
-        totalCount = 0
-        for count in self.countWhenPlayerWin:
-            totalCount += count
-        print(
-            f"Player Win Avg. Count: {totalCount / len(self.countWhenPlayerWin)}\n")
+        # totalCount = 0
+        # for count in self.countWhenPlayerWin:
+        #     totalCount += count
+        # print(
+        #     f"Player Win Avg. Count: {totalCount / len(self.countWhenPlayerWin)}\n")
 
         # Calculate average count when dealer wins
         print(f"Dealer Score: {self.dealerWins}")
-        totalCount = 0
-        for count in self.countWhenDealerWin:
-            totalCount += count
-        print(
-            f"Dealer Win Avg. Count: {totalCount / len(self.countWhenDealerWin)}\n")
+        # totalCount = 0
+        # for count in self.countWhenDealerWin:
+        #     totalCount += count
+        # print(
+        #     f"Dealer Win Avg. Count: {totalCount / len(self.countWhenDealerWin)}\n")
 
         # Calculate average count when ties
-        print(f"Ties: {self.tie}")
-        totalCount = 0
-        for count in self.countWhenTie:
-            totalCount += count
-        print(
-            f"Tie Avg. Count: {totalCount / len(self.countWhenTie)}\n")
+        print(f"Ties: {self.tie}\n")
+        # totalCount = 0
+        # for count in self.countWhenTie:
+        #     totalCount += count
+        # print(
+        #     f"Tie Avg. Count: {totalCount / len(self.countWhenTie)}\n")
 
         # Calculate average count when player bust
         print(f"Player Busts: {self.playerBusts}")
-        totalCount = 0
-        for count in self.countWhenPlayerBust:
-            totalCount += count
-        print(
-            f"Player Bust Avg. Count: {totalCount / len(self.countWhenPlayerBust)}")
+        # totalCount = 0
+        # for count in self.countWhenPlayerBust:
+        #     totalCount += count
+        # print(
+        #     f"Player Bust Avg. Count: {totalCount / len(self.countWhenPlayerBust)}")
 
         # Calculate average count when dealer bust
-        print(f"Dealer Busts: {self.dealerBusts}")
-        totalCount = 0
-        for count in self.countWhenDealerBust:
-            totalCount += count
-        print(
-            f"Dealer Bust Avg. Count: {totalCount / len(self.countWhenDealerBust)}\n")
+        print(f"Dealer Busts: {self.dealerBusts}\n")
+        # totalCount = 0
+        # for count in self.countWhenDealerBust:
+        #     totalCount += count
+        # print(
+        #     f"Dealer Bust Avg. Count: {totalCount / len(self.countWhenDealerBust)}\n")
 
         # Calculate average count when blackjack
         print(f"Total Blackjacks: {self.totalBlackjacks}")
